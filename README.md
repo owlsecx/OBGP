@@ -18,13 +18,18 @@
 
 ## 📌 Overview
 
-OBGP is a security and privacy tool from the OwlSec suite.
+OBGP audits BGP routing tables exported from your own routers or from looking glasses. It validates route origins against ROA data with RPKI and runs an anomaly engine that scores every prefix for hijack risk. It only analyzes exported tables and never peers with a BGP speaker.
 
 ---
 
 ## ✨ Features
 
-- Standalone executable, no Python installation needed.
+- Reads simple prefix/AS-path lines and Cisco "show ip bgp" style dumps
+- RPKI origin validation against a ROA file (prefix, maxLength, ASN) → valid / invalid / unknown, for IPv4 and IPv6
+- Anomaly engine: bogons, MOAS, AS-path loops, private ASNs, heavy prepending, too-short or too-long prefixes, blackhole and graceful-shutdown communities
+- Per-prefix hijack score with AS-path and prefix statistics
+- Reference for well-known ASNs and BGP communities
+- Reports in TXT / JSON / Markdown / CSV / SARIF; exits with code 3 on CRITICAL/HIGH findings
 
 ---
 
@@ -38,8 +43,13 @@ OBGP is a security and privacy tool from the OwlSec suite.
 ## 🚀 Usage
 
 ```bash
-./OBGP
+./OBGP                                       # interactive menu
+./OBGP --file table.txt --analyze
+./OBGP --file table.txt --rpki --roa roas.csv
+./OBGP --file table.txt --hijack
 ```
+
+Run `./OBGP --help` for the full list of options.
 
 ---
 
